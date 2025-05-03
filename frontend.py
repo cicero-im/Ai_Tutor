@@ -38,7 +38,7 @@ st.markdown("""
 
 # Check API health
 try:
-    response = requests.get(f"{API_URL}/health")
+    response = requests.get(f"{API_URL}/health", timeout=60)
     api_status = "✅ Connected" if response.status_code == 200 else "❌ Not Connected"
 except:
     api_status = "❌ Not Connected"
@@ -50,8 +50,8 @@ def ask_question(question: str, enable_web_search: bool = False) -> str:
     try:
         response = requests.post(
             f"{API_URL}/ask",
-            json={"question": question, "enable_web_search": enable_web_search}
-        )
+            json={"question": question, "enable_web_search": enable_web_search}, 
+        timeout=60)
         if response.status_code == 200:
             return response.json()
         else:
@@ -64,8 +64,8 @@ def generate_quiz(topic: str, num_questions: int) -> Optional[Dict[str, Any]]:
     try:
         response = requests.post(
             f"{API_URL}/quiz",
-            json={"topic": topic, "num_questions": num_questions}
-        )
+            json={"topic": topic, "num_questions": num_questions}, 
+        timeout=60)
         if response.status_code == 200:
             # The API returns JSON directly, not a string that needs parsing
             return response.json()
@@ -81,8 +81,8 @@ def evaluate_answer(question: str, selected_answer: str) -> Dict[str, Any]:
     try:
         response = requests.post(
             f"{API_URL}/evaluate",
-            json={"question": question, "selected_answer": selected_answer}
-        )
+            json={"question": question, "selected_answer": selected_answer}, 
+        timeout=60)
         if response.status_code == 200:
             data = response.json()
             # Extract the evaluation from the response
