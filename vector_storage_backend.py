@@ -4,8 +4,8 @@ from qdrant_client.http import models
 from typing import List, Dict, Any, Optional, Tuple, Set
 import uuid
 import re
-import random
 from enum import Enum
+import secrets
 
 class DifficultyLevel(Enum):
     EASY = "easy"
@@ -299,7 +299,7 @@ class VectorStorageProcessor:
             
             # Randomly select problems for the quiz
             problems = search_result["results"]
-            selected_problems = random.sample(problems, min(num_questions, len(problems)))
+            selected_problems = secrets.SystemRandom().sample(problems, min(num_questions, len(problems)))
             
             questions = []
             for idx, problem in enumerate(selected_problems, 1):
